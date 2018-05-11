@@ -6,7 +6,7 @@ import (
 )
 
 func NewRouter() *mux.Router {
-	router := mux.NewRouter().StrictSlash(true)
+	router := mux.NewRouter()
 	router.NotFoundHandler = http.HandlerFunc(NotFound)
 	for _, route := range routes {
 		var handler http.Handler
@@ -17,7 +17,6 @@ func NewRouter() *mux.Router {
 			Path(route.Pattern).
 			Name(route.Name).
 			Handler(handler)
-
 	}
 	return router
 }
