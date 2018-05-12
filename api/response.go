@@ -6,12 +6,17 @@ import (
 )
 
 type Response struct {
-	Status  int      `json:"status"`
-	Message string   `json:"message"`
-	Data    []string `json:"data"`
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+	Data    []Data `json:"data"`
 }
 
-func NewResponse(m string, d []string) Response {
+type Data struct {
+	Id       int     `json:"id"`
+	Accuracy float64 `json:"accuracy"`
+}
+
+func NewResponse(m string, d []Data) Response {
 	return Response{
 		Status:  http.StatusOK,
 		Message: m,

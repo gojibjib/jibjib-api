@@ -24,4 +24,10 @@ var routes = Routes{
 		"/ping",
 		Ping,
 	},
+	Route{
+		Name:        "Dummy response",
+		Method:      "GET",
+		Pattern:     "/dummy",
+		HandlerFunc: Dummy,
+	},
 }
