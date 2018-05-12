@@ -1,5 +1,7 @@
 ### Project ###
 app
+*.pem
+*.pub
 ### End of Project ###
 # Created by https://www.gitignore.io/api/go,macos,python,intellij+all,terraform
 

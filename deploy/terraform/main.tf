@@ -14,6 +14,21 @@ resource "aws_instance" "jibjib_api" {
     Name = "${var.instance_name}"
     Project = "${var.project_name}"
   }
+
+  provisioner "remote-exec" {
+    script = "${path.root}/bootstrap/ubuntu.sh"
+    connection {
+      type = "ssh"
+      user = "${var.ssh_user}"
+      private_key = "${file("${var.private_key}")}"
+    }
+  }
+}
+
+# Use a specific key par for deployment
+resource "aws_key_pair" "deployer" {
+  key_name = "${var.key_name}"
+  public_key = "${file("${var.public_key}")}"
 }
 
 # Assign an EIP
