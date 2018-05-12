@@ -19,5 +19,5 @@ sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-c
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Start the API
-wget -q https://github.com/gojibjib/jibjib-api/docker-compose.yml -o docker-compose.yml
+wget -q https://raw.githubusercontent.com/gojibjib/jibjib-api/master/docker-compose.yml -o docker-compose.yml
 docker-compose up -d
