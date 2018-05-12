@@ -1,7 +1,7 @@
 ### Project ###
 app
 ### End of Project ###
-# Created by https://www.gitignore.io/api/go,macos,python,intellij+all
+# Created by https://www.gitignore.io/api/go,macos,python,intellij+all,terraform
 
 ### Go ###
 # Binaries for programs and plugins
@@ -210,5 +210,14 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+### Terraform ###
+# Compiled files
+*.tfstate
+*.tfstate.*
 
-# End of https://www.gitignore.io/api/go,macos,python,intellij+all
+# Module directory
+.terraform/
+
+# .tfvars files
+*.tfvars
+# End of https://www.gitignore.io/api/go,macos,python,intellij+all,terraform
