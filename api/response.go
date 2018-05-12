@@ -32,7 +32,7 @@ func (r Response) sendJSON(w http.ResponseWriter) {
 		w.WriteHeader(status)
 
 		r.Status = status
-		r.Message = "Internal Server Error"
+		r.Message = "Internal Server Error while trying to encode JSON"
 		r.Data = nil
 
 		_ = json.NewEncoder(w).Encode(r)

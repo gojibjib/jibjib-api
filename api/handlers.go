@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"math/rand"
 	"net/http"
 	"sort"
@@ -13,8 +14,16 @@ func Ping(w http.ResponseWriter, r *http.Request) {
 }
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 	resp := NewResponse("Not found", nil)
 	resp.Status = http.StatusNotFound
+	log.Printf(
+		"%s\t%s\t%s\t%s",
+		r.RemoteAddr,
+		r.Method,
+		r.RequestURI,
+		time.Since(start),
+	)
 	resp.sendJSON(w)
 }
 
