@@ -2,8 +2,11 @@
 app
 *.pem
 *.pub
+roster
+Saltfile
 ### End of Project ###
-# Created by https://www.gitignore.io/api/go,macos,python,intellij+all,terraform
+
+# Created by https://www.gitignore.io/api/go,macos,python,vagrant,terraform,intellij+all
 
 ### Go ###
 # Binaries for programs and plugins
@@ -222,4 +225,10 @@ venv.bak/
 
 # .tfvars files
 *.tfvars
-# End of https://www.gitignore.io/api/go,macos,python,intellij+all,terraform
+
+### Vagrant ###
+.vagrant/
+*.box
+
+
+# End of https://www.gitignore.io/api/go,macos,python,vagrant,terraform,intellij+all

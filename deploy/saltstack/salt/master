@@ -1,0 +1,11 @@
+fileserver_backend:
+  - roots
+
+file_roots:
+  base:
+    - /root/salt/salt
+
+pillar_roots:
+  base:
+    - /root/salt/pillar
+  
