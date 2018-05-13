@@ -57,4 +57,4 @@ $ curl http://localhost:8080/dummy
 ```
 
 ### Remotely
-[See deploy instructions](https://github.com/gojibjib/jibjib-api/tree/master/deploy).
+[See deploy instructions](https://github.com/gojibjib/jibjib-api/tree/master/deploy)

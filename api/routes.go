@@ -15,16 +15,16 @@ type Routes []Route
 
 var routes = Routes{
 	Route{
-		"Root",
-		"GET",
-		"/",
-		Ping,
+		Name:        "Root",
+		Method:      "GET",
+		Pattern:     "/",
+		HandlerFunc: Ping,
 	},
 	Route{
-		"Ping",
-		"GET",
-		"/ping",
-		Ping,
+		Name:        "Ping",
+		Method:      "GET",
+		Pattern:     "/ping",
+		HandlerFunc: Ping,
 	},
 	Route{
 		Name:        "Dummy response",

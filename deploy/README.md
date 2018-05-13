@@ -42,13 +42,13 @@ $ cd terraform
 $ terraform init
 ```
 
-Create and populate your `terraform.tfvars`
+Create and populate your `terraform.tfvars`:
 
 ```
 $ touch terraform.tfvars
 ```
 
-For your keys, assuming you have the following layout
+For your keys, assuming you have the following layout:
 
 ```
 keys/
@@ -56,7 +56,7 @@ keys/
 └── example_key.pub
 ```
 
-Make sure to set the relative paths to the files in your `terraform.tfvars`
+Make sure to set the relative paths to the files in your `terraform.tfvars`:
 
 ```
 key_name = "example_key"
@@ -66,13 +66,13 @@ private_key = "keys/example_key.pem"
 
 ### Deploy
 
-Plan your deployment
+Plan your deployment:
 
 ```
 $ terraform plan
 ```
 
-Then apply it
+Then apply it:
 
 ```
 $ terraform apply
@@ -80,7 +80,7 @@ $ terraform apply
 
 ## SaltStack
 
-The in `saltstack/` provided Formula is inteded to be used with agentless [Salt SSH](https://docs.saltstack.com/en/latest/topics/ssh/). You can either use your own environment to send commands & apply states, use a [Docker container](https://github.com/obitech/docker-salt) or via [Vagrant](https://www.vagrantup.com/).
+The in `saltstack/` provided Formula is intended to be used with agentless [Salt SSH](https://docs.saltstack.com/en/latest/topics/ssh/). You can either use your own environment to send commands & apply states, use a [Docker container](https://github.com/obitech/docker-salt) or use [Vagrant](https://www.vagrantup.com/).
 
 ### Preparation
 
