@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+// NewRouter returns a gorilla/mux router with routes registered
+// from routes.go
 func NewRouter() *mux.Router {
 	router := mux.NewRouter()
 	router.NotFoundHandler = http.HandlerFunc(NotFound)

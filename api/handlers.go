@@ -8,11 +8,13 @@ import (
 	"time"
 )
 
+// Ping sends a simple "Pong" as as JSON response
 func Ping(w http.ResponseWriter, r *http.Request) {
 	resp := NewResponse("Pong", nil)
 	resp.sendJSON(w)
 }
 
+// NotFound is a 404 Message according to the Response type
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	resp := NewResponse("Not found", nil)
@@ -27,6 +29,7 @@ func NotFound(w http.ResponseWriter, r *http.Request) {
 	resp.sendJSON(w)
 }
 
+// Dummy sends a test Response mit randomized IDs and accuracies
 func Dummy(w http.ResponseWriter, r *http.Request) {
 	var id []int
 	var acc []float64

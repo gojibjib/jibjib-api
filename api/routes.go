@@ -2,6 +2,7 @@ package main
 
 import "net/http"
 
+// Route is a helper type defining a specific Route
 type Route struct {
 	Name        string
 	Method      string
@@ -9,6 +10,7 @@ type Route struct {
 	HandlerFunc http.HandlerFunc
 }
 
+// Routes defines a slice of all available API Routes
 type Routes []Route
 
 var routes = Routes{
