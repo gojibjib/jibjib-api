@@ -7,9 +7,9 @@ import (
 
 // Response defines an API response.
 type Response struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-	Data    []Data `json:"data"`
+	Status  int         `json:"status"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 // Data defines the data field in the API response.
@@ -18,20 +18,32 @@ type Data struct {
 	Accuracy float64 `json:"accuracy"`
 }
 
+// Bird defines a single Bird to retrieve info about
+type Bird struct {
+	ID      int    `json:"id" bson:"id"`
+	Name    string `json:"name" bson:"name"`
+	Genus   string `json:"genus" bson:"genus"`
+	Species string `json:"species" bson:"species"`
+	TitleDE string `json:"title_de" bson:"title_de"`
+	TitleEN string `json:"title_en" bson:"title_en"`
+	DescDE  string `json:"desc_de" bson:"desc_de"`
+	DescEN  string `json:"desc_en" bson:"desc_en"`
+}
+
 // NewResponse returns a Response with a passed message string and slice of Data.
 // This will automatically set the Status field to 200.
-func NewResponse(m string, d []Data) Response {
+func NewResponse(m string, d interface{}, s int) Response {
 	return Response{
-		Status:  http.StatusOK,
+		Status:  s,
 		Message: m,
 		Data:    d,
 	}
 }
 
-// sendJSON encodes a Response as JSON and sends it on a passed http.ResponseWriter.
-func (r Response) sendJSON(w http.ResponseWriter) {
+// SendJSON encodes a Response as JSON and sends it on a passed http.ResponseWriter.
+func (r Response) SendJSON(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/JSON; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(r.Status)
 	if err := json.NewEncoder(w).Encode(r); err != nil {
 		status := http.StatusInternalServerError
 		w.WriteHeader(status)

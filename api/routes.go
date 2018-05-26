@@ -7,6 +7,7 @@ type Route struct {
 	Name        string
 	Method      string
 	Pattern     string
+	Queries     []string
 	HandlerFunc http.HandlerFunc
 }
 
@@ -27,9 +28,15 @@ var routes = Routes{
 		HandlerFunc: Ping,
 	},
 	Route{
-		Name:        "Dummy response",
+		Name:        "DummyResponse",
 		Method:      "GET",
-		Pattern:     "/dummy",
+		Pattern:     "/birds/dummy",
 		HandlerFunc: Dummy,
+	},
+	Route{
+		Name:        "RetrieveBirdInfo",
+		Method:      "GET",
+		Pattern:     "/birds/info",
+		HandlerFunc: GetBirdInfo,
 	},
 }

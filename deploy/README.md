@@ -1,6 +1,6 @@
-# Remotely deploy [jibjib-api](https://github.com/gojibjib/jibjib-api)
+# Deploy [jibjib-api](https://github.com/gojibjib/jibjib-api) remotely
 
-These folders offer resources to remotely deploy the API via [Terraform](https://www.terraform.io/) and/or [SaltStack](https://saltstack.com/).
+These folders offer resources to deploy the API via [Terraform](https://www.terraform.io/) and/or [SaltStack](https://saltstack.com/) to a remote host.
 
 ## Local prerequisites
 Clone the repo:
