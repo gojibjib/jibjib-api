@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gojibjib/jibjib-api/pkg"
 	"gopkg.in/mgo.v2"
 	"log"
 	"net/http"
@@ -19,12 +20,15 @@ func main() {
 		log.Fatalf("Unable to establish DB connection to %s", mgoURL)
 	}
 	defer session.Close()
+	log.Printf("DB connection established at %s", mgoURL)
 
-	server := Server{
-		Router:  NewRouter(),
+	server := jibjib_api.Server{
+		Router:  jibjib_api.NewRouter(),
 		Session: session,
 	}
 
 	server.Routes()
+	log.Printf("Starting listening on 0.0.0.0:8080")
 	log.Fatal(http.ListenAndServe(":8080", server.Router))
+
 }

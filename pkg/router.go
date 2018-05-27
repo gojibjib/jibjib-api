@@ -1,4 +1,4 @@
-package main
+package jibjib_api
 
 import (
 	"github.com/gorilla/mux"
