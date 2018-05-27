@@ -9,6 +9,7 @@ import (
 type Response struct {
 	Status  int         `json:"status"`
 	Message string      `json:"message"`
+	Count   int         `json:"count"`
 	Data    interface{} `json:"data"`
 }
 
@@ -32,10 +33,11 @@ type Bird struct {
 
 // NewResponse returns a Response with a passed message string and slice of Data.
 // This will automatically set the Status field to 200.
-func NewResponse(m string, d interface{}, s int) Response {
+func NewResponse(s int, m string, c int, d interface{}) Response {
 	return Response{
 		Status:  s,
 		Message: m,
+		Count:   c,
 		Data:    d,
 	}
 }
