@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
+	"log"
 	"math/rand"
 	"net/http"
 	"sort"
@@ -64,6 +65,7 @@ func (s *Server) GetAllBirds() http.HandlerFunc {
 		var all []*Bird
 		err := c.Find(bson.M{}).Select(bson.M{"desc_de": false, "desc_en": false}).All(&all)
 		if err != nil {
+			log.Println(err)
 			NewResponse(http.StatusInternalServerError, "Error retrieving list of birds", 0, nil).SendJSON(w)
 			return
 		}
@@ -109,6 +111,7 @@ func (s *Server) GetBirdByID() http.HandlerFunc {
 		}
 		err = q.One(&bird)
 		if err != nil {
+			log.Println(err)
 			NewResponse(http.StatusNotFound, fmt.Sprintf("Unable to find bird with id=%d", id), 0, nil).
 				SendJSON(w)
 			return
