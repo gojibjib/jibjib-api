@@ -1,4 +1,4 @@
-package jibjib_api
+package api
 
 import (
 	"log"

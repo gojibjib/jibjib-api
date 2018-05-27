@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gojibjib/jibjib-api/pkg"
+	"github.com/gojibjib/jibjib-api/pkg/api"
 	"gopkg.in/mgo.v2"
 	"log"
 	"net/http"
@@ -22,8 +22,8 @@ func main() {
 	defer session.Close()
 	log.Printf("DB connection established at %s", mgoURL)
 
-	server := jibjib_api.Server{
-		Router:  jibjib_api.NewRouter(),
+	server := api.Server{
+		Router:  api.NewRouter(),
 		Session: session,
 	}
 
