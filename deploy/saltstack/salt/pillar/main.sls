@@ -9,6 +9,8 @@ system:
         - ca-certificates
         - software-properties-common
         - python-apt
+    users:
+      - ubuntu
 
 docker:
   lookup:
@@ -24,5 +26,17 @@ docker-compose:
 
 jibjib:
   lookup:
+    files:
+      birds_json: https://raw.githubusercontent.com/gojibjib/voice-grabber/master/meta/birds.json
     api:
-      compose: https://raw.githubusercontent.com/gojibjib/jibjib-api/master/docker-compose.yml
+      dir: /api
+      image: obitech/jibjib-api
+      container_name: jibjib-api
+      host_port: 8080
+    db:
+      dir: /db
+      image: mongo:3.6.5
+      container_name: mongo
+      db_name: birds
+      collection_name: birds
+      host_port: 27017

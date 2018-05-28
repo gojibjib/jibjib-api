@@ -1,0 +1,23 @@
+version: "3"
+services:
+  jibjib-api:
+    image: "test"
+    container_name: "jibjib-api"
+    environment:
+      - JIBJIB_DB_URL=prod-r:prod-r@mongo/birds
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on: 
+      - mongo
+
+  mongo:
+    image: mongo:3.6.5
+    restart: always
+    container_name: mongo
+    volumes:
+        - "./db/data:/data/db"
+        - "./db/conf:/etc/mongo"
+    ports:
+        - "27017:27017"
+    command: --config /etc/mongo/mongod.conf --auth

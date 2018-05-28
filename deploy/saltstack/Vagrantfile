@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
       apt-get install salt-ssh -y
     SHELL
 
-    # Install go manually with `vagrant provision --provision-with install_go`
+    # If Go is needed, install manually with `vagrant provision --provision-with install_go`
     master.vm.provision "install_go", type: "shell", run: "never", inline: <<-SHELL
       wget -q -O - https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz | tar xzf - /usr/local
       echo "export PATH=/usr/local/go/bin:$PATH" > /home/vagrant/.profile

@@ -1,4 +1,9 @@
 base:
   "*":
     - docker
-    - jibjib
+
+  "jibjib_db"
+    - db
+  
+  "jibjib_api":
+    - api

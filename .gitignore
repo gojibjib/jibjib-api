@@ -2,8 +2,13 @@
 app
 *.pem
 *.pub
+db/data/*
+db/imprt/*
 roster
 Saltfile
+db_api_auth.sls
+db_ip.sls
+db_root_auth.sls
 ### End of Project ###
 
 # Created by https://www.gitignore.io/api/go,macos,python,vagrant,terraform,intellij+all

@@ -1,0 +1,10 @@
+version: "3"
+services:
+  jibjib-api:
+    image: "{{ salt['pillar.get']('jibjib:lookup:api:image') }}"
+    container_name: "{{ salt['pillar.get']('jibjib:lookup:api:container_name') }}"
+    environment:
+      - JIBJIB_DB_URL={{ salt['pillar.get']('db_user:user') }}:{{ salt['pillar.get']('db_user:pw') }}@{{ salt['pillar.get']('db_ip') }}/birds
+    ports:
+      - "{{ salt['pillar.get']('jibjib:lookup:api:host_port') }}:8080"
+    restart: always

@@ -6,7 +6,6 @@ variable instance_type {}
 variable key_name {}
 variable public_key {}
 variable private_key {}
-variable instance_name {}
 variable project_name {}
 variable sg_desc {}
 variable vpc {}
