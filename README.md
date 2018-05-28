@@ -94,7 +94,7 @@ docker-compose up -d
 ### Endpoints
 
 Endpoint|Method|Comment
----|---|---|---
+---|---|---
 `/`|GET|Answers with a basic "Pong" response
 `/ping`|GET|Answers with a basic "Pong" response
 `/birds/dummy`|GET|Sends a JSON Response with randomized IDs and accuracies for testing

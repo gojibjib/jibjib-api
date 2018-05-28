@@ -2,10 +2,10 @@ base:
   '*':
     - main
   
-  'jibjib_api':
+  'api':
     - db_api_auth
     - db_ip
 
-  'jibjib_db':
+  'db':
     - db_api_auth
     - db_root_auth
