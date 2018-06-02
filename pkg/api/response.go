@@ -57,3 +57,7 @@ func (r Response) SendJSON(w http.ResponseWriter) {
 		_ = json.NewEncoder(w).Encode(r)
 	}
 }
+
+func SendErrorJSON(w http.ResponseWriter, s int, m string) {
+	NewResponse(s, m, 0, nil).SendJSON(w)
+}

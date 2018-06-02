@@ -47,6 +47,12 @@ func (s *Server) Routes() {
 			Pattern:     "/birds/{id:[0-9]+}",
 			HandlerFunc: s.GetBirdByID(),
 		},
+		Route{
+			Name:        "UploadBirdFile",
+			Method:      "POST",
+			Pattern:     "/birds",
+			HandlerFunc: s.FileUploader(),
+		},
 	}
 
 	for _, route := range routes {
