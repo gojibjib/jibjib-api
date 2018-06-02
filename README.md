@@ -30,17 +30,17 @@ mkdir -p db/import db/data
 Grab the JSON data from Github:
 
 ```
-wget https://raw.githubusercontent.com/gojibjib/voice-grabber/master/meta/birds.json -o /db/data/birds.json
+wget https://raw.githubusercontent.com/gojibjib/voice-grabber/master/meta/birds.json -o db/import/birds.json
 ```
 
 We need to launch the container first to initialize the database:
 
 ```
 docker run --rm -d --name mongo -d \
-	-v $(pwd)/data:/data/db \
-	-v $(pwd)/conf:/etc/mongo \
-	-v $(pwd)/import:/import \
-	-v $(pwd)/initdb:/initdb \
+	-v $(pwd)/db/data:/data/db \
+	-v $(pwd)/db/conf:/etc/mongo \
+	-v $(pwd)/db/import:/import \
+	-v $(pwd)/db/initdb:/initdb \
 	mongo:3.6.5 --config=/etc/mongo/mongod.conf
 ```
 
@@ -55,6 +55,13 @@ Next stop the container:
 ```
 docker container rm -f mongo
 ```
+
+You can then start the database locally:
+
+```
+docker-compose up -d mongo
+```
+
 
 #### Compilation
 If you didn't clone the repo, `go get` the package and the `main.go`:
