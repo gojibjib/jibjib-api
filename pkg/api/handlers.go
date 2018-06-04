@@ -6,11 +6,9 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
-	"io"
 	"io/ioutil"
 	"log"
 	"math/rand"
-	"mime/multipart"
 	"net/http"
 	"sort"
 	"strconv"
@@ -19,7 +17,7 @@ import (
 
 // NotFound is a 404 Message according to the Response type
 func NotFound(w http.ResponseWriter, r *http.Request) {
-	NewResponse(http.StatusNotFound, "Not found", 0, nil).SendJSON(w)
+	SendErrorJSON(w, http.StatusInternalServerError, "Not found")
 	return
 }
 
@@ -71,7 +69,7 @@ func (s *Server) GetAllBirds() http.HandlerFunc {
 		err := c.Find(bson.M{}).Select(bson.M{"desc_de": false, "desc_en": false}).All(&all)
 		if err != nil {
 			log.Println(err)
-			NewResponse(http.StatusInternalServerError, "Error retrieving list of birds", 0, nil).SendJSON(w)
+			SendErrorJSON(w, http.StatusInternalServerError, "Error retrieving list of birds")
 			return
 		}
 
@@ -91,7 +89,7 @@ func (s *Server) GetBirdByID() http.HandlerFunc {
 		p := mux.Vars(r)
 		id, err := strconv.Atoi(p["id"])
 		if err != nil {
-			NewResponse(http.StatusBadRequest, "Invalid ID", 0, nil).SendJSON(w)
+			SendErrorJSON(w, http.StatusBadRequest, "Invalid ID")
 			return
 		}
 
@@ -117,8 +115,7 @@ func (s *Server) GetBirdByID() http.HandlerFunc {
 		err = q.One(&bird)
 		if err != nil {
 			log.Println(err)
-			NewResponse(http.StatusNotFound, fmt.Sprintf("Unable to find bird with id=%d", id), 0, nil).
-				SendJSON(w)
+			SendErrorJSON(w, http.StatusBadRequest, fmt.Sprintf("Unable to find bird with id=%d", id))
 			return
 		}
 		NewResponse(http.StatusOK, "Bird found", 1, bird).SendJSON(w)
@@ -126,88 +123,89 @@ func (s *Server) GetBirdByID() http.HandlerFunc {
 	}
 }
 
-// FileUploader takes a multipart/form-data file via POST requests and saves it to disk
-func (s *Server) FileUploader() http.HandlerFunc {
+// FileUploaderMultipart takes a multipart/form-data file via POST requests and saves it to disk
+func (s *Server) FileUploaderMultipart() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Open multipart file
 		file, handler, err := r.FormFile("file")
 		if err != nil {
 			log.Println(err)
-			NewResponse(http.StatusInternalServerError, "Error while trying to upload file", 0, nil).
-				SendJSON(w)
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to upload file")
 			return
 		}
 		defer file.Close()
 
-		//f, err := os.OpenFile(handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
-		//if err != nil {
-		//	log.Println(err)
-		//	NewResponse(http.StatusInternalServerError, "Error while trying to save file", 0, nil).
-		//		SendJSON(w)
-		//	return
-		//}
-		//defer f.Close()
+		// Send file to Query Service
+		queryServiceURL := "http://localhost:8081/audio/transform/binary"
+		contentType := "application/octet-stream"
 
-		//io.Copy(f, file)
-
-		var client *http.Client
-		queryServiceURL := "http://localhost:8081/transform"
-
-		// Prepare form to send out
-		var b bytes.Buffer
-		var fw io.Writer
-		mw := multipart.NewWriter(&b)
-
-		fw, err = mw.CreateFormFile("file", handler.Filename)
+		log.Printf("POST %s to %s as %s\n", handler.Filename, queryServiceURL, contentType)
+		resp, err := http.Post(queryServiceURL, contentType, file)
 		if err != nil {
 			log.Println(err)
 			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
-			return
-		}
-		_, err = io.Copy(fw, file)
-		if err != nil {
-			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
-			return
-		}
-		mw.Close()
-
-		log.Printf("POST %s to %s as %s\n", handler.Filename, queryServiceURL, mw.FormDataContentType())
-		req, err := http.NewRequest("POST", queryServiceURL, &b)
-		if err != nil {
-			log.Println(err)
-			NewResponse(http.StatusInternalServerError, "Error while trying to transmit file to query service", 0, nil).
-				SendJSON(w)
-			return
-		}
-		req.Header.Set("Content-Type", mw.FormDataContentType())
-		resp, err := client.Do(req)
-		//resp, err := http.Post(queryServiceURL, contentType, file)
-		if err != nil {
-			log.Println(err)
-			NewResponse(http.StatusInternalServerError, "Error while trying to transmit file to query service", 0, nil).
-				SendJSON(w)
 			return
 		}
 		defer resp.Body.Close()
 
-		buff, err := ioutil.ReadAll(resp.Body)
+		// Parse response
+		var a Response
+		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			log.Println(err)
-			NewResponse(http.StatusInternalServerError, "Unable to parse query service response", 0, nil).
-				SendJSON(w)
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
 			return
 		}
-		log.Printf("RECV from %s:\n%s", queryServiceURL, string(buff))
+		if err := json.Unmarshal(b, &a); err != nil {
+			log.Println(err)
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
+			return
+		}
 
-		var queryResp Response
-		err = json.Unmarshal(buff, queryResp)
+		NewResponse(http.StatusAccepted, "Successfully uploaded file", 0, nil).SendJSON(w)
+		return
+	}
+}
+
+// FileUploaderBinary takes a multipart/form-data file via POST requests and saves it to disk
+func (s *Server) FileUploaderBinary() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Read uploaded data
+		b, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			NewResponse(http.StatusInternalServerError, "Unable to unmarshal query service response", 0, nil).
-				SendJSON(w)
+			log.Println(err)
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to upload file")
 			return
 		}
+		defer r.Body.Close()
 
-		log.Println(queryResp)
+		// Send data to Query Service
+		reader := bytes.NewBuffer(b)
+		queryServiceURL := "http://localhost:8081/audio/transform/binary"
+		contentType := "application/octet-stream"
+
+		log.Printf("POST buffer to %s as %s\n", queryServiceURL, contentType)
+		resp, err := http.Post(queryServiceURL, contentType, reader)
+		if err != nil {
+			log.Println(err)
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
+			return
+		}
+		defer resp.Body.Close()
+
+		// Parse query service response
+		var a Response
+		b, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Println(err)
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
+			return
+		}
+		if err := json.Unmarshal(b, &a); err != nil {
+			log.Println(err)
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
+			return
+		}
 
 		NewResponse(http.StatusAccepted, "Successfully uploaded file", 0, nil).SendJSON(w)
 		return
