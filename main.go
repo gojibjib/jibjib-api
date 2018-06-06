@@ -22,9 +22,16 @@ func main() {
 	defer session.Close()
 	log.Printf("DB connection established at %s", mgoURL)
 
+	env = "JIBJIB_MODEL_URL"
+	modelURL := os.Getenv(env)
+	if modelURL == "" {
+		log.Fatalf("Environment variable %s is empty", env)
+	}
+
 	server := api.Server{
-		Router:  api.NewRouter(),
-		Session: session,
+		Router:   api.NewRouter(),
+		Session:  session,
+		ModelURL: modelURL,
 	}
 
 	server.Routes()

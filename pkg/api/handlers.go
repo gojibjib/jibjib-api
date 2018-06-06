@@ -136,7 +136,7 @@ func (s *Server) FileUploaderMultipart() http.HandlerFunc {
 		defer file.Close()
 
 		// Send file to Query Service
-		queryServiceURL := "http://localhost:8081/audio/transform/binary"
+		queryServiceURL := s.ModelURL + "/audio/transform/multipart"
 		contentType := "application/octet-stream"
 
 		log.Printf("POST %s to %s as %s\n", handler.Filename, queryServiceURL, contentType)
@@ -162,7 +162,7 @@ func (s *Server) FileUploaderMultipart() http.HandlerFunc {
 			return
 		}
 
-		NewResponse(http.StatusAccepted, "Successfully uploaded file", 0, nil).SendJSON(w)
+		NewResponse(http.StatusAccepted, "Got response from query service", 1, a).SendJSON(w)
 		return
 	}
 }
@@ -181,7 +181,7 @@ func (s *Server) FileUploaderBinary() http.HandlerFunc {
 
 		// Send data to Query Service
 		reader := bytes.NewBuffer(b)
-		queryServiceURL := "http://localhost:8081/audio/transform/binary"
+		queryServiceURL := s.ModelURL + "/audio/transform/binary"
 		contentType := "application/octet-stream"
 
 		log.Printf("POST buffer to %s as %s\n", queryServiceURL, contentType)
@@ -207,7 +207,7 @@ func (s *Server) FileUploaderBinary() http.HandlerFunc {
 			return
 		}
 
-		NewResponse(http.StatusAccepted, "Successfully uploaded file", 0, nil).SendJSON(w)
+		NewResponse(http.StatusAccepted, "Successfully uploaded file", 1, a).SendJSON(w)
 		return
 	}
 }
