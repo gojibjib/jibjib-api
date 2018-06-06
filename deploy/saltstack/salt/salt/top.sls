@@ -7,3 +7,6 @@ base:
   
   "api":
     - api
+
+  "query":
+    - query

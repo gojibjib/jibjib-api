@@ -5,6 +5,7 @@ services:
     container_name: "{{ salt['pillar.get']('jibjib:lookup:api:container_name') }}"
     environment:
       - JIBJIB_DB_URL={{ salt['pillar.get']('db_user:user') }}:{{ salt['pillar.get']('db_user:pw') }}@{{ salt['pillar.get']('db_ip') }}/birds
+      - JIBJIB_MODEL_URL=http://{{ salt['pillar.get']('query:ip') }}:{{ salt['pillar.get']('jibjib:lookup:query:host_port') }}
     ports:
       - "{{ salt['pillar.get']('jibjib:lookup:api:host_port') }}:8080"
     restart: always

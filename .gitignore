@@ -9,6 +9,7 @@ Saltfile
 db_api_auth.sls
 db_ip.sls
 db_root_auth.sls
+query_ip.sls
 ### End of Project ###
 
 # Created by https://www.gitignore.io/api/go,macos,python,vagrant,terraform,intellij+all

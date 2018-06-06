@@ -136,7 +136,7 @@ func (s *Server) FileUploaderMultipart() http.HandlerFunc {
 		defer file.Close()
 
 		// Send file to Query Service
-		queryServiceURL := s.ModelURL + "/audio/transform/multipart"
+		queryServiceURL := s.ModelURL + "/audio/transform/binary"
 		contentType := "application/octet-stream"
 
 		log.Printf("POST %s to %s as %s\n", handler.Filename, queryServiceURL, contentType)
@@ -153,12 +153,12 @@ func (s *Server) FileUploaderMultipart() http.HandlerFunc {
 		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to read query response")
 			return
 		}
 		if err := json.Unmarshal(b, &a); err != nil {
 			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to unmarshal query response")
 			return
 		}
 
@@ -198,16 +198,16 @@ func (s *Server) FileUploaderBinary() http.HandlerFunc {
 		b, err = ioutil.ReadAll(resp.Body)
 		if err != nil {
 			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to read query response")
 			return
 		}
 		if err := json.Unmarshal(b, &a); err != nil {
 			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
+			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to unmarshal query response")
 			return
 		}
 
-		NewResponse(http.StatusAccepted, "Successfully uploaded file", 1, a).SendJSON(w)
+		NewResponse(http.StatusAccepted, "Got response from query service", 1, a).SendJSON(w)
 		return
 	}
 }

@@ -4,7 +4,7 @@ provider "aws" {
   secret_key = "${var.secret_key}"
 }
 
-# AWS API instance
+# API instance
 resource "aws_instance" "jibjib_api" {
   ami = "${var.ami}"
   instance_type = "${var.instance_type}"
@@ -25,7 +25,7 @@ resource "aws_instance" "jibjib_api" {
   }
 }
 
-# AWS DB instance
+# DB instance
 resource "aws_instance" "jibjib_db" {
   ami = "${var.ami}"
   instance_type = "${var.instance_type}"
@@ -46,6 +46,27 @@ resource "aws_instance" "jibjib_db" {
   }  
 }
 
+# Query instance
+resource "aws_instance" "jibjib_query" {
+  ami = "${var.ami}"
+  instance_type = "${var.instance_type}"
+  key_name = "${var.key_name}"
+  security_groups = ["${aws_security_group.jibjib_api.name}"]
+  tags {
+    Name = "${var.project_name}_query"
+    Project = "${var.project_name}"
+  }
+
+  provisioner "remote-exec" {
+    script = "${path.root}/bootstrap/ubuntu.sh"
+    connection {
+      type = "ssh"
+      user = "${var.ssh_user}"
+      private_key = "${file("${var.private_key}")}"
+    }
+  }
+}
+
 # Use a specific key par for deployment
 resource "aws_key_pair" "deployer" {
   key_name = "${var.key_name}"
@@ -60,6 +81,11 @@ resource "aws_eip" "jibjib_api" {
 # DB IP
 resource "aws_eip" "jibjib_db" {
   instance = "${aws_instance.jibjib_db.id}"
+}
+
+# Query IP
+resource "aws_eip" "jibjib_query" {
+  instance = "${aws_instance.jibjib_query.id}"
 }
 
 # Create a Security Group
@@ -93,15 +119,6 @@ resource "aws_security_group" "jibjib_api" {
     cidr_blocks = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-
-  # MongoDB
-  # ingress {
-  #   from_port = 27017
-  #   to_port = 27017
-  #   protocol = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  #   ipv6_cidr_blocks = ["::/0"]
-  # }
 
   # Allow all to exit
   egress {

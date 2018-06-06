@@ -40,3 +40,8 @@ jibjib:
       db_name: birds
       collection_name: birds
       host_port: 27017
+    query:
+      dir: /query
+      image: obitech/jibjib-query
+      container_name: jibjib-query
+      host_port: 8081
