@@ -136,7 +136,8 @@ func (s *Server) FileUploaderMultipart() http.HandlerFunc {
 		defer file.Close()
 
 		// Send file to Query Service
-		queryServiceURL := s.ModelURL + "/audio/transform/binary"
+		//queryServiceURL := s.ModelURL + "/audio/transform/binary"
+		queryServiceURL := s.ModelURL + "/detect/binary"
 		contentType := "application/octet-stream"
 
 		log.Printf("POST %s to %s as %s\n", handler.Filename, queryServiceURL, contentType)
@@ -167,8 +168,8 @@ func (s *Server) FileUploaderMultipart() http.HandlerFunc {
 	}
 }
 
-// FileUploaderBinary takes a multipart/form-data file via POST requests and saves it to disk
-func (s *Server) FileUploaderBinary() http.HandlerFunc {
+// DetectBinary takes a application/octet-stream file via POST requests and forwards it to the API for detection
+func (s *Server) DetectBinary() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Read uploaded data
 		b, err := ioutil.ReadAll(r.Body)
@@ -181,7 +182,8 @@ func (s *Server) FileUploaderBinary() http.HandlerFunc {
 
 		// Send data to Query Service
 		reader := bytes.NewBuffer(b)
-		queryServiceURL := s.ModelURL + "/audio/transform/binary"
+		//queryServiceURL := s.ModelURL + "/audio/transform/binary"
+		queryServiceURL := s.ModelURL + "/detect/binary"
 		contentType := "application/octet-stream"
 
 		log.Printf("POST buffer to %s as %s\n", queryServiceURL, contentType)
@@ -207,7 +209,7 @@ func (s *Server) FileUploaderBinary() http.HandlerFunc {
 			return
 		}
 
-		NewResponse(http.StatusAccepted, "Got response from query service", 1, a).SendJSON(w)
+		NewResponse(a.Status, a.Message, a.Count, a.Data).SendJSON(w)
 		return
 	}
 }

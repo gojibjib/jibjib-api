@@ -107,6 +107,7 @@ Endpoint|Method|Comment
 `/birds/dummy`|GET|Sends a JSON Response with randomized IDs and accuracies for testing
 `/birds/all`|GET|Retrieves all bird information, without descriptions
 `/birds/{id:[0-9]+}`|GET|Retrieves bird information by ID. Use query string `desc_de=false` and `desc_en=false` to omit description fields.
+`/detect/binary`|POST|Send a MP3 file to the API to start querying the ML model for bird voice recognition. File needs to be send in binary format and with the Header `Content-Type: application/octet-stream` set.
 
 ### Response format
 
@@ -166,5 +167,28 @@ curl "htttp://localhost:8080/birds/1?desc_de=false&desc_en=false"
         "desc_de":"",
         "desc_en":""
     }
+}
+```
+
+```
+curl -H 'Content-Type: application/octet-stream' -X POST --data-binary @larus_canus_3.mp3 http://localhost:8081/detect/binary
+{
+  "message": "Detection successful",
+  "status": 200,
+  "count": 3,
+  "data": [
+    {
+      "accuracy": 0.6470588235294118,
+      "id": 110
+    },
+    {
+      "accuracy": 0.17647058823529413,
+      "id": 7
+    },
+    {
+      "accuracy": 0.17647058823529413,
+      "id": 30
+    }
+  ]
 }
 ```

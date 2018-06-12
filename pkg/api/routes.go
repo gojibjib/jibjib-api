@@ -57,7 +57,7 @@ func (s *Server) Routes() {
 			Name:        "UploadBirdFile",
 			Method:      "POST",
 			Pattern:     "/detect/binary",
-			HandlerFunc: s.FileUploaderBinary(),
+			HandlerFunc: s.DetectBinary(),
 		},
 	}
 
