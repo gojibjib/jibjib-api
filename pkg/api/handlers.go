@@ -180,13 +180,18 @@ func (s *Server) DetectBinary() http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
+		if len(b) <= 0 {
+			SendErrorJSON(w, http.StatusBadRequest, "Uploaded file is empty")
+			return
+		}
+
 		// Send data to Query Service
 		reader := bytes.NewBuffer(b)
 		//queryServiceURL := s.ModelURL + "/audio/transform/binary"
 		queryServiceURL := s.ModelURL + "/detect/binary"
 		contentType := "application/octet-stream"
 
-		log.Printf("POST buffer to %s as %s\n", queryServiceURL, contentType)
+		log.Printf("POST buffer (size: %d) to %s as %s\n", len(b), queryServiceURL, contentType)
 		resp, err := http.Post(queryServiceURL, contentType, reader)
 		if err != nil {
 			log.Println(err)

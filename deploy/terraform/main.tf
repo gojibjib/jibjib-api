@@ -49,7 +49,7 @@ resource "aws_instance" "jibjib_db" {
 # Query instance
 resource "aws_instance" "jibjib_query" {
   ami = "${var.ami}"
-  instance_type = "${var.instance_type}"
+  instance_type = "${var.query_instance_type}"
   key_name = "${var.key_name}"
   security_groups = ["${aws_security_group.jibjib_api.name}"]
   tags {
