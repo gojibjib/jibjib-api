@@ -2,11 +2,11 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/gojibjib/gopeana)](https://goreportcard.com/report/github.com/gojibjib/jibjib-api) [![Docker Build Status](https://img.shields.io/docker/build/obitech/jibjib-api.svg)](https://hub.docker.com/r/obitech/jibjib-api/builds/)
 
-Go REST API to receive input from the [JibJib Android App](https://github.com/gojibjib/jibjib), query the [Model](https://github.com/gojibjib/jibjib-model) and send those information back to the App.
+Go REST API to receive input from the [JibJib Android App](https://github.com/gojibjib/jibjib), [query](https://github.com/gojibjib/jibjib-query) the [model](https://github.com/gojibjib/jibjib-model) and send those information back to the App.
 
 ## Install
 ### Remotely
-[See deploy instructions](https://github.com/gojibjib/jibjib-api/tree/master/deploy)
+[See deploy instructions](https://github.com/gojibjib/jibjib-api/tree/master/deploy).
 
 ### Locally
 #### Clone the repo
@@ -107,7 +107,7 @@ Endpoint|Method|Comment
 `/birds/dummy`|GET|Sends a JSON Response with randomized IDs and accuracies for testing
 `/birds/all`|GET|Retrieves all bird information, without descriptions
 `/birds/{id:[0-9]+}`|GET|Retrieves bird information by ID. Use query string `desc_de=false` and `desc_en=false` to omit description fields.
-`/detect/binary`|POST|Send a MP3 file to the API to start querying the ML model for bird voice recognition. File needs to be send in binary format and with the Header `Content-Type: application/octet-stream` set.
+`/detect/binary`|POST|Send a MP4 file to the API to start querying the ML model for bird voice recognition. File needs to be send in binary format and with the Header `Content-Type: application/octet-stream` set.
 
 ### Response format
 
@@ -171,7 +171,8 @@ curl "htttp://localhost:8080/birds/1?desc_de=false&desc_en=false"
 ```
 
 ```
-curl -H 'Content-Type: application/octet-stream' -X POST --data-binary @larus_canus_3.mp3 http://localhost:8081/detect/binary
+# For now, only mp4 files are being accepted
+curl -H 'Content-Type: application/octet-stream' -X POST --data-binary @larus_canus_3.mp4 http://localhost:8081/detect/binary
 {
   "message": "Detection successful",
   "status": 200,

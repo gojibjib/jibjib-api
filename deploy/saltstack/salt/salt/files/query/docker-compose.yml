@@ -11,6 +11,7 @@ services:
     volumes:
       - "{{ salt['pillar.get']('jibjib:lookup:query:dir') }}/input:/app/input"
     restart: always
+    command: gunicorn -w 5 -b 0.0.0.0:8081 --max-requests 10 --preload wsgi
     depends_on:
       - serving
   
