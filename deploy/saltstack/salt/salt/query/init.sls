@@ -1,3 +1,4 @@
 include:
-  - .install
-  - .start
+  - query.install
+  - serving.install
+  - query.start

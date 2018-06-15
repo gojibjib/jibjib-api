@@ -60,6 +60,10 @@ run_init_script:
     - name: docker exec {{ container_name }} bash /initdb/setup.sh
     - cwd: {{ dir }}
 
+sleep_some_more:
+  cmd.run:
+    - name: sleep 4
+
 stop_init_db_container:
   cmd.run:
     - name: docker container rm -f {{ container_name }}

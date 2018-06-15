@@ -28,6 +28,8 @@ jibjib:
   lookup:
     files:
       birds_json: https://raw.githubusercontent.com/gojibjib/voice-grabber/master/meta/birds.json
+      model_proto: https://s3-eu-west-1.amazonaws.com/jibjib/model/jibjib_model_serving.tgz
+      mappings: https://s3-eu-west-1.amazonaws.com/jibjib/pickle/mapping_pickles.tgz
     api:
       dir: /api
       image: obitech/jibjib-api
@@ -45,3 +47,9 @@ jibjib:
       image: obitech/jibjib-query
       container_name: jibjib-query
       host_port: 8081
+    serving:
+      dir: /serve
+      image: obitech/tensorflow-serving:devel-cpu
+      container_name: serving
+      host_port: 9000
+      model_name: jibjib_model
