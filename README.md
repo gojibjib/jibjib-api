@@ -1,6 +1,7 @@
 # [jibjib-api](https://github.com/gojibjib/jibjib-api)
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/gojibjib/gopeana)](https://goreportcard.com/report/github.com/gojibjib/jibjib-api) [![Docker Build Status](https://img.shields.io/docker/build/obitech/jibjib-api.svg)](https://hub.docker.com/r/obitech/jibjib-api/builds/)
+[![godoc reference](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/gojibjib/jibjib-api/pkg/api)
 
 Go REST API to receive input from the [JibJib Android App](https://github.com/gojibjib/jibjib), [query](https://github.com/gojibjib/jibjib-query) the [model](https://github.com/gojibjib/jibjib-model) and send those information back to the App.
 
