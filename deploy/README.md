@@ -180,7 +180,7 @@ Applying Highstate will provision the following, simultaneously:
 1. Create necessary folders and copy files
 2. Grab DB data as JSON from [github](https://github.com/gojibjib/voice-grabber/tree/master/meta)
 3. Starts an initial MongoDB container to:
-  1. Create root user
+  - Create root user
   - Create read-only user on production database
   - Imports JSON into production database
 4. Starts the actual MongoDB container (with `--auth` flag and persisting, bind-mounted data folder)
