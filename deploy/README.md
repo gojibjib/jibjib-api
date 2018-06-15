@@ -4,7 +4,7 @@ Leverage [Terraform](https://www.terraform.io/) and/or [SaltStack](https://salts
 
 - The [jibjib-api](https://github.com/gojibjib/jibjib-api/) service
 - A [MongoDB](https://www.mongodb.com/) instance for the API
-- The [jibjib-query](https://github.com/gojibjib/jibjib-query) service, containg a [Flask]((http://flask.pocoo.org/)) API and a [TensorFlow Serving](https://www.tensorflow.org/serving/) container to serve the [jibjib-model](https://gojibjib/jibjib-model).
+- The [jibjib-query](https://github.com/gojibjib/jibjib-query) service, containg a [Flask](http://flask.pocoo.org/) API and a [TensorFlow Serving](https://www.tensorflow.org/serving/) container to serve the [jibjib-model](https://gojibjib/jibjib-model).
 
 ## Local prerequisites
 Clone the repo:
