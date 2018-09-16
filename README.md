@@ -29,7 +29,7 @@ Setup [jibjib-data](https://github.com/gojibjib/jibjib-data).
 Start the API:
 
 ```
-export JIBJIB_DB_URL=test-r:test-r@localhost/birds
+export JIBJIB_DB_URL=read:read@localhost/birds
 ./app
 ```
 
