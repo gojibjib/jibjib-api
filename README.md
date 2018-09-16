@@ -6,65 +6,10 @@
 Go REST API to receive input from the [JibJib Android App](https://github.com/gojibjib/jibjib), [query](https://github.com/gojibjib/jibjib-query) the [model](https://github.com/gojibjib/jibjib-model) and send those information back to the App.
 
 ## Install
-### Remotely
-[See deploy instructions](https://github.com/gojibjib/jibjib-api/tree/master/deploy).
+### Docker
+See [deploy instructions](https://github.com/gojibjib/deploy).
 
-### Locally
-#### Clone the repo
-```
-git clone https://github.com/gojibjib/jibjib-api
-```
-
-Or if you have Go installed, you can clone it into your Gopath:
-
-```
-git clone https://github.com/gojibjib/jibjib-api $GOPATH/src/github.com/gojibjib/jibjib-api
-```
-
-#### MongoDB
-Create directories, if necessary:
-
-```
-mkdir -p db/import db/data
-```
-
-Grab the JSON data from Github:
-
-```
-wget https://raw.githubusercontent.com/gojibjib/voice-grabber/master/meta/birds.json -o db/import/birds.json
-```
-
-We need to launch the container first to initialize the database:
-
-```
-docker run --rm -d --name mongo -d \
-	-v $(pwd)/db/data:/data/db \
-	-v $(pwd)/db/conf:/etc/mongo \
-	-v $(pwd)/db/import:/import \
-	-v $(pwd)/db/initdb:/initdb \
-	mongo:3.6.5 --config=/etc/mongo/mongod.conf
-```
-
-And setup users:
-
-```
-docker exec mongo bash /initdb/setup.sh
-```
-
-Next stop the container:
-
-```
-docker container rm -f mongo
-```
-
-You can then start the database locally:
-
-```
-docker-compose up -d mongo
-```
-
-
-#### Compilation
+### Compile yourself
 If you didn't clone the repo, `go get` the package and the `main.go`:
 
 ```
@@ -79,23 +24,13 @@ Compile it:
 CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
 ```
 
-Start the database:
-
-```
-docker-compose up mongo
-```
+Setup [jibjib-data](https://github.com/gojibjib/jibjib-data).
 
 Start the API:
 
 ```
 export JIBJIB_DB_URL=test-r:test-r@localhost/birds
 ./app
-```
-
-### Via Docker
-
-```
-docker-compose up -d
 ```
 
 ## API Documentation
