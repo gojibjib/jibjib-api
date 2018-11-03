@@ -50,12 +50,6 @@ func (s *Server) Routes() {
 		Route{
 			Name:        "UploadBirdFile",
 			Method:      "POST",
-			Pattern:     "/detect/multipart",
-			HandlerFunc: s.FileUploaderMultipart(),
-		},
-		Route{
-			Name:        "UploadBirdFile",
-			Method:      "POST",
 			Pattern:     "/detect/binary",
 			HandlerFunc: s.DetectBinary(),
 		},
