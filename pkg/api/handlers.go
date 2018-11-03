@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2/bson"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -13,6 +11,9 @@ import (
 	"sort"
 	"strconv"
 	"time"
+
+	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // NotFound is a 404 Message according to the Response type
@@ -119,51 +120,6 @@ func (s *Server) GetBirdByID() http.HandlerFunc {
 			return
 		}
 		NewResponse(http.StatusOK, "Bird found", 1, bird).SendJSON(w)
-		return
-	}
-}
-
-// FileUploaderMultipart takes a multipart/form-data file via POST requests and saves it to disk
-func (s *Server) FileUploaderMultipart() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		// Open multipart file
-		file, handler, err := r.FormFile("file")
-		if err != nil {
-			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to upload file")
-			return
-		}
-		defer file.Close()
-
-		// Send file to Query Service
-		//queryServiceURL := s.ModelURL + "/audio/transform/binary"
-		queryServiceURL := s.ModelURL + "/detect/binary"
-		contentType := "application/octet-stream"
-
-		log.Printf("POST %s to %s as %s\n", handler.Filename, queryServiceURL, contentType)
-		resp, err := http.Post(queryServiceURL, contentType, file)
-		if err != nil {
-			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to transmit file to query service")
-			return
-		}
-		defer resp.Body.Close()
-
-		// Parse response
-		var a Response
-		b, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to read query response")
-			return
-		}
-		if err := json.Unmarshal(b, &a); err != nil {
-			log.Println(err)
-			SendErrorJSON(w, http.StatusInternalServerError, "Error while trying to unmarshal query response")
-			return
-		}
-
-		NewResponse(http.StatusAccepted, "Got response from query service", 1, a).SendJSON(w)
 		return
 	}
 }
